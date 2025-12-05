@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+
+:root {
+  /* Colors - Aquatic Neo-Brutalism */
+  --bg-deep: #0f172a;
+  /* Deep Ocean Blue (Background) */
+  --bg-card: #1e293b;
+  /* Lighter Blue (Cards) */
+  --bg-surface: #334155;
+  /* Surface/Hover */
+
+  --accent-primary: #2dd4bf;
+  /* Electric Teal (Scallop vibe) */
+  --accent-secondary: #f472b6;
+  /* Coral Pink (Pop) */
+  --accent-warning: #fbbf24;
+  /* Amber */
+
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+
+  --border-color: #000000;
+  /* Brutalist Black Border */
+
+  /* Brutalist Specs */
+  --border-width: 2px;
+  --shadow-offset: 4px;
+  --radius: 0px;
+  /* Sharp corners for brutalism */
+
+  /* Typography */
+  --font-main: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Typography Utilities */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+/* Brutalist Button */
+.btn-brutal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background-color: var(--accent-primary);
+  color: #000;
+  border: var(--border-width) solid var(--border-color);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--border-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+}
+
+.btn-brutal:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--border-color);
+}
+
+.btn-brutal:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 var(--border-color);
+}
+
+.btn-brutal.secondary {
+  background-color: var(--bg-surface);
+  color: var(--text-main);
+}
+
+.btn-brutal.pink {
+  background-color: var(--accent-secondary);
+}
+
+/* Neo-Brutalist Card */
+.card-brutal {
+  background-color: var(--bg-card);
+  border: var(--border-width) solid var(--border-color);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--border-color);
+  padding: 1.5rem;
+  transition: transform 0.2s ease;
+}
+
+.card-brutal:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: calc(var(--shadow-offset) + 3px) calc(var(--shadow-offset) + 3px) 0 var(--border-color);
+  border-color: var(--accent-primary);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-deep);
+  border-left: var(--border-width) solid var(--border-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-primary);
+  border: var(--border-width) solid var(--border-color);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-secondary);
+}
+
+/* Layout Utilities */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Grid Layouts - CNN Style */
+.news-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .news-grid {
+    grid-template-columns: 280px 1fr 320px;
+    /* Sidebar | Main | Trends */
+    gap: 2rem;
+  }
+}

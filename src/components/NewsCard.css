@@ -1,0 +1,8 @@
+.news-card {
+    /* Reset */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Clearing overly complex styles that might interfere */
