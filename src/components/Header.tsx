@@ -1,11 +1,14 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import gsap from 'gsap';
-import { useEnoki } from '../context/EnokiContext';
+import { useCurrentAccount, useDisconnectWallet, ConnectModal } from '@mysten/dapp-kit';
+// useConnectWallet, useWallets,
 import { Link } from 'react-router-dom';
 
 export default function Header() {
     const headerRef = useRef<HTMLElement>(null);
-    const { address, login, logout } = useEnoki();
+    const account = useCurrentAccount();
+    const { mutate: disconnect } = useDisconnectWallet();
+    const [open, setOpen] = useState(false);
 
     // GSAP Animation for Entrance
     useEffect(() => {
@@ -74,13 +77,13 @@ export default function Header() {
                     fontSize: '1.1rem'
                 }}>TRENDING</a>
 
-                {address ? (
+                {account ? (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                         <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem' }}>
-                            {address.slice(0, 6)}...{address.slice(-4)}
+                            {account.address.slice(0, 6)}...{account.address.slice(-4)}
                         </span>
                         <button
-                            onClick={logout}
+                            onClick={() => disconnect()}
                             className="btn-brutal"
                             style={{
                                 padding: '0.8rem 1.5rem',
@@ -92,17 +95,22 @@ export default function Header() {
                         </button>
                     </div>
                 ) : (
-                    <button
-                        onClick={login}
-                        className="btn-primary" // Use the primary "brutal" button style
-                        style={{
-                            padding: '0.8rem 2rem',
-                            fontSize: '1.1rem',
-                            fontWeight: 800
-                        }}
-                    >
-                        GET STARTED
-                    </button>
+                    <ConnectModal
+                        trigger={
+                            <button
+                                className="btn-primary" // Use the primary "brutal" button style
+                                style={{
+                                    padding: '0.8rem 2rem',
+                                    fontSize: '1.1rem',
+                                    fontWeight: 800
+                                }}
+                            >
+                                GET STARTED
+                            </button>
+                        }
+                        open={open}
+                        onOpenChange={(isOpen) => setOpen(isOpen)}
+                    />
                 )}
             </nav>
         </header>

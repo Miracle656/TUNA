@@ -60,7 +60,7 @@ export function useLatestNews(limit: number = 50) {
                 })
             );
 
-            return articles.filter((article): article is NewsArticle => article !== null);
+            return articles.filter(article => article !== null) as NewsArticle[];
         },
         staleTime: 30000, // 30 seconds
     });

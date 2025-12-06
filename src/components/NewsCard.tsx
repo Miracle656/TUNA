@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { NewsArticle } from '../types';
+import { type NewsArticle } from '../types';
 import TipModal from './TipModal';
 import './NewsCard.css';
 

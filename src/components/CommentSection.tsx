@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { useCurrentAccount } from '@mysten/dapp-kit'; // Back to standard hook
+import { useCurrentAccount, ConnectModal } from '@mysten/dapp-kit'; // Back to standard hook
+// useConnectWallet, useWallets,
 import { useArticleComments, usePostComment } from '../hooks/useComments';
-import { useEnoki } from '../context/EnokiContext';
 
 interface CommentSectionProps {
     articleId: string;
@@ -11,8 +11,8 @@ export default function CommentSection({ articleId }: CommentSectionProps) {
     const { data: comments, isLoading } = useArticleComments(articleId);
     const { mutate: postComment, isPending } = usePostComment();
     const account = useCurrentAccount();
-    const { login } = useEnoki(); // Use Enoki login
     const [commentText, setCommentText] = useState('');
+    const [open, setOpen] = useState(false);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -55,9 +55,15 @@ export default function CommentSection({ articleId }: CommentSectionProps) {
                 {!account ? (
                     <div style={{ textAlign: 'center', padding: '2rem' }}>
                         <p style={{ marginBottom: '1rem', color: 'var(--text-muted)' }}>Login to join the conversation.</p>
-                        <button onClick={login} className="btn-primary" style={{ padding: '0.8rem 2rem' }}>
-                            GET STARTED
-                        </button>
+                        <ConnectModal
+                            trigger={
+                                <button className="btn-primary" style={{ padding: '0.8rem 2rem' }}>
+                                    GET STARTED
+                                </button>
+                            }
+                            open={open}
+                            onOpenChange={setOpen}
+                        />
                     </div>
                 ) : (
                     <form onSubmit={handleSubmit}>

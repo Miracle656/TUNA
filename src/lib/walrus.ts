@@ -1,4 +1,4 @@
-import { WALRUS_CONFIG } from '../config';
+// Config unused
 import type { WalrusArticleContent, WalrusCommentContent } from '../types';
 
 // Multiple Walrus publisher endpoints for fallback

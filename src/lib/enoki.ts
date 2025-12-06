@@ -11,5 +11,5 @@ export const enokiFlow = new EnokiFlow({
  */
 export async function getEnokiAddress(): Promise<string | null> {
     const session = await enokiFlow.getSession();
-    return session ? session.address : null;
+    return session ? (session as any).address : null;
 }

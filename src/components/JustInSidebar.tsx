@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { Link } from 'react-router-dom';
-import { NewsArticle } from '../types';
+import { type NewsArticle } from '../types';
 
 interface JustInSidebarProps {
     articles: NewsArticle[];
