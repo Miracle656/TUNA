@@ -162,20 +162,18 @@ export default function Home() {
                             />
                         </div>
 
-                        <div style={{
+                        <div className="news-grid-responsive" style={{
                             display: 'grid',
                             gridTemplateColumns: 'repeat(auto-fill, minmax(min(350px, 100%), 1fr))',
                             gap: 'clamp(1.5rem, 3vw, 2.5rem)'
                         }}>
                             {feedArticles.map((article, index) => {
-                                // Make every 3rd card (starting at index 2) a featured card (2x width)
+                                // Make every 3rd card (starting at index 2) a featured card (2x width) on desktop only
                                 const isFeatured = (index + 1) % 3 === 0;
                                 return (
                                     <div
                                         key={article.id}
-                                        style={{
-                                            gridColumn: isFeatured ? 'span 2' : 'span 1',
-                                        }}
+                                        className={isFeatured ? 'featured-card' : 'regular-card'}
                                     >
                                         <NewsCard
                                             article={article}

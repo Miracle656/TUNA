@@ -14,7 +14,7 @@ interface NewsCardProps {
     size?: 'regular' | 'featured' | 'compact';
 }
 
-export default function NewsCard({ article }: NewsCardProps) {
+export default function NewsCard({ article, size = 'regular' }: NewsCardProps) {
     const [isTipModalOpen, setIsTipModalOpen] = useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
 
@@ -105,7 +105,7 @@ export default function NewsCard({ article }: NewsCardProps) {
                 <Link to={`/article/${article.id}`} style={{ display: 'block' }}>
                     {article.image && (
                         <div style={{
-                            height: '240px',
+                            height: size === 'featured' ? 'clamp(300px, 40vh, 400px)' : 'clamp(200px, 30vh, 240px)',
                             background: `url(${article.image}) center/cover no-repeat`,
                             borderBottom: '2px solid black',
                             margin: '-1.5rem -1.5rem 1rem -1.5rem'

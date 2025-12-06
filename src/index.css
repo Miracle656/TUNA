@@ -156,3 +156,18 @@ h6 {
     gap: 2rem;
   }
 }
+
+/* Responsive News Grid */
+.news-grid-responsive .regular-card {
+  grid-column: span 1;
+}
+
+.news-grid-responsive .featured-card {
+  grid-column: span 1;
+}
+
+@media (min-width: 768px) {
+  .news-grid-responsive .featured-card {
+    grid-column: span 2;
+  }
+}
