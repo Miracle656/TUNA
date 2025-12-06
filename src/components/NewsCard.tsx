@@ -11,9 +11,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 interface NewsCardProps {
     article: NewsArticle;
+    size?: 'regular' | 'featured' | 'compact';
 }
 
-export default function NewsCard({ article }: NewsCardProps) {
+export default function NewsCard({ article, size = 'regular' }: NewsCardProps) {
     const [isTipModalOpen, setIsTipModalOpen] = useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
 

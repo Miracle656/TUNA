@@ -122,7 +122,7 @@ export default function Home() {
                                 fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
                                 textTransform: 'uppercase',
                                 margin: 0
-                            }}>Latest News</h2>
+                            }}>MORE TOP STORIES</h2>
                         </div>
 
                         <div style={{
@@ -130,9 +130,23 @@ export default function Home() {
                             gridTemplateColumns: 'repeat(auto-fill, minmax(min(350px, 100%), 1fr))',
                             gap: 'clamp(1.5rem, 3vw, 2.5rem)'
                         }}>
-                            {feedArticles.map((article) => (
-                                <NewsCard key={article.id} article={article} />
-                            ))}
+                            {feedArticles.map((article, index) => {
+                                // Make every 3rd card (starting at index 2) a featured card (2x width)
+                                const isFeatured = (index + 1) % 3 === 0;
+                                return (
+                                    <div
+                                        key={article.id}
+                                        style={{
+                                            gridColumn: isFeatured ? 'span 2' : 'span 1',
+                                        }}
+                                    >
+                                        <NewsCard
+                                            article={article}
+                                            size={isFeatured ? 'featured' : 'regular'}
+                                        />
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
 
