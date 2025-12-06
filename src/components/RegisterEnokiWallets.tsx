@@ -10,7 +10,7 @@ export default function RegisterEnokiWallets() {
         const { unregister } = registerEnokiWallets({
             providers: {
                 google: {
-                    clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID || '845644888970-f2l47d20hv6c2dhqm0nugthgu47ncbpb.apps.googleusercontent.com',
+                    clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID || '845644888970-sjm125bq4afsl25u1ud8v7qlb8jf08p3.apps.googleusercontent.com',
                 },
             },
             apiKey: ENOKI_PUBLIC_KEY,
