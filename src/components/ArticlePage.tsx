@@ -59,7 +59,7 @@ export default function ArticlePage() {
                     &larr; Back to Feed
                 </Link>
 
-                <article className="article-content card-brutal" style={{ padding: '0', overflow: 'hidden' }}>
+                <article className="article-content card-brutal" style={{ padding: '0', overflow: 'hidden', width: '100%', maxWidth: '100%' }}>
                     {/* Header Image */}
                     {article.image && (
                         <div style={{
@@ -72,7 +72,7 @@ export default function ArticlePage() {
                         }} />
                     )}
 
-                    <div style={{ padding: 'clamp(1.5rem, 5vw, 3rem)' }}>
+                    <div style={{ padding: 'clamp(1.5rem, 5vw, 3rem)', maxWidth: '100%', boxSizing: 'border-box' }}>
                         {/* Meta Tags */}
                         <div style={{
                             display: 'flex',
@@ -110,7 +110,11 @@ export default function ArticlePage() {
                             marginBottom: 'clamp(1.5rem, 3vw, 2rem)',
                             color: 'var(--text-main)',
                             textShadow: '2px 2px 0 #000',
-                            wordWrap: 'break-word'
+                            wordWrap: 'break-word',
+                            overflowWrap: 'break-word',
+                            wordBreak: 'break-word',
+                            maxWidth: '100%',
+                            width: '100%'
                         }}>
                             {article.title}
                         </h1>
@@ -163,7 +167,10 @@ export default function ArticlePage() {
                             color: '#e2e8f0',
                             fontFamily: 'Georgia, serif',
                             marginBottom: 'clamp(2rem, 4vw, 3rem)',
-                            wordWrap: 'break-word'
+                            wordWrap: 'break-word',
+                            overflowWrap: 'break-word',
+                            wordBreak: 'break-word',
+                            maxWidth: '100%'
                         }}>
                             <div dangerouslySetInnerHTML={{ __html: article.content || '<p>No content available.</p>' }} />
                         </div>

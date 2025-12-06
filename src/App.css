@@ -52,3 +52,21 @@
   animation: spin 1s linear infinite;
   margin: 0 auto 1rem;
 }
+
+/* Article content responsive text handling */
+.article-body * {
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.article-body img {
+  width: 100%;
+  height: auto;
+}
+
+.article-body table {
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
