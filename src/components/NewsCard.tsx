@@ -14,7 +14,7 @@ interface NewsCardProps {
     size?: 'regular' | 'featured' | 'compact';
 }
 
-export default function NewsCard({ article, size = 'regular' }: NewsCardProps) {
+export default function NewsCard({ article }: NewsCardProps) {
     const [isTipModalOpen, setIsTipModalOpen] = useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
 
