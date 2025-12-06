@@ -28,22 +28,22 @@ export default function JustInSidebar({ articles }: JustInSidebarProps) {
             <h3 style={{
                 borderBottom: '4px solid var(--border-color)',
                 paddingBottom: '0.5rem',
-                marginBottom: '1.5rem',
+                marginBottom: 'clamp(1rem, 2vw, 1.5rem)',
                 textTransform: 'uppercase',
-                color: 'var(--accent-secondary)', // Pink accent for "Breaking" vibe
-                fontSize: '1.5rem'
+                color: 'var(--accent-secondary)',
+                fontSize: 'clamp(1.25rem, 3vw, 1.5rem)'
             }}>
                 Just In
             </h3>
 
-            <div ref={containerRef} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <div ref={containerRef} style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(1rem, 2vw, 1.5rem)' }}>
                 {articles.slice(0, 8).map((article) => (
                     <div key={article.id} className="just-in-item" style={{
-                        paddingBottom: '1rem',
+                        paddingBottom: 'clamp(0.75rem, 2vw, 1rem)',
                         borderBottom: '1px solid rgba(71, 85, 105, 0.4)'
                     }}>
                         <span style={{
-                            fontSize: '0.75rem',
+                            fontSize: 'clamp(0.7rem, 1.5vw, 0.75rem)',
                             color: 'var(--accent-primary)',
                             fontWeight: 700,
                             display: 'block',
@@ -54,11 +54,12 @@ export default function JustInSidebar({ articles }: JustInSidebarProps) {
                         </span>
                         <Link to={`/article/${article.id}`} style={{
                             color: 'var(--text-main)',
-                            fontSize: '1.1rem',
+                            fontSize: 'clamp(1rem, 2vw, 1.1rem)',
                             fontWeight: 600,
                             lineHeight: 1.4,
                             display: 'block',
-                            textDecoration: 'none'
+                            textDecoration: 'none',
+                            wordWrap: 'break-word'
                         }}
                             onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-secondary)'}
                             onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-main)'}

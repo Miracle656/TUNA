@@ -44,16 +44,17 @@ export default function ArticlePage() {
             <main className="container" style={{
                 maxWidth: '900px',
                 margin: '0 auto',
-                padding: '0 1rem 4rem 1rem'
+                padding: '0 clamp(1rem, 3vw, 2rem) clamp(2rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem)'
             }}>
                 <Link to="/" style={{
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '0.5rem',
-                    marginBottom: '2rem',
+                    marginBottom: 'clamp(1rem, 3vw, 2rem)',
                     color: 'var(--text-muted)',
                     fontWeight: 600,
-                    textDecoration: 'none'
+                    textDecoration: 'none',
+                    fontSize: 'clamp(0.9rem, 2vw, 1rem)'
                 }}>
                     &larr; Back to Feed
                 </Link>
@@ -63,7 +64,7 @@ export default function ArticlePage() {
                     {article.image && (
                         <div style={{
                             width: '100%',
-                            height: '400px',
+                            height: 'clamp(250px, 40vh, 400px)',
                             backgroundImage: `url(${article.image})`,
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
@@ -73,14 +74,19 @@ export default function ArticlePage() {
 
                     <div style={{ padding: 'clamp(1.5rem, 5vw, 3rem)' }}>
                         {/* Meta Tags */}
-                        <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem' }}>
+                        <div style={{
+                            display: 'flex',
+                            gap: 'clamp(0.5rem, 2vw, 1rem)',
+                            marginBottom: 'clamp(1rem, 2vw, 1.5rem)',
+                            flexWrap: 'wrap'
+                        }}>
                             <span style={{
                                 background: 'var(--accent-primary)',
                                 color: 'black',
                                 fontWeight: 800,
-                                padding: '0.25rem 0.75rem',
+                                padding: 'clamp(0.25rem, 1vw, 0.25rem) clamp(0.5rem, 2vw, 0.75rem)',
                                 border: '2px solid black',
-                                fontSize: '0.9rem'
+                                fontSize: 'clamp(0.75rem, 2vw, 0.9rem)'
                             }}>
                                 {article.category || 'NEWS'}
                             </span>
@@ -88,7 +94,8 @@ export default function ArticlePage() {
                                 color: 'var(--text-muted)',
                                 fontWeight: 600,
                                 display: 'flex',
-                                alignItems: 'center'
+                                alignItems: 'center',
+                                fontSize: 'clamp(0.75rem, 2vw, 1rem)'
                             }}>
                                 {new Date(Number(article.timestamp)).toLocaleDateString(undefined, {
                                     year: 'numeric', month: 'long', day: 'numeric'
@@ -98,36 +105,52 @@ export default function ArticlePage() {
 
                         {/* Title */}
                         <h1 style={{
-                            fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+                            fontSize: 'clamp(1.75rem, 5vw, 3.5rem)',
                             lineHeight: 1.1,
-                            marginBottom: '2rem',
+                            marginBottom: 'clamp(1.5rem, 3vw, 2rem)',
                             color: 'var(--text-main)',
-                            textShadow: '2px 2px 0 #000'
+                            textShadow: '2px 2px 0 #000',
+                            wordWrap: 'break-word'
                         }}>
                             {article.title}
                         </h1>
 
                         {/* Author/Source */}
                         <div style={{
-                            padding: '1rem',
+                            padding: 'clamp(0.75rem, 2vw, 1rem)',
                             background: 'var(--bg-deep)',
                             border: '2px solid var(--border-color)',
-                            marginBottom: '3rem',
+                            marginBottom: 'clamp(2rem, 4vw, 3rem)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'space-between',
                             flexWrap: 'wrap',
-                            gap: '1rem'
+                            gap: 'clamp(0.75rem, 2vw, 1rem)'
                         }}>
                             <div>
-                                <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Source: </span>
-                                <a href={article.url} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 800, color: 'var(--accent-primary)' }}>
+                                <span style={{
+                                    color: 'var(--text-muted)',
+                                    fontSize: 'clamp(0.8rem, 2vw, 0.9rem)'
+                                }}>Source: </span>
+                                <a href={article.url} target="_blank" rel="noopener noreferrer" style={{
+                                    fontWeight: 800,
+                                    color: 'var(--accent-primary)',
+                                    fontSize: 'clamp(0.8rem, 2vw, 1rem)',
+                                    wordBreak: 'break-word'
+                                }}>
                                     {article.source} ↗
                                 </a>
                             </div>
 
-                            <div className="action-buttons" style={{ display: 'flex', gap: '1rem' }}>
-                                <button className="btn-brutal secondary" onClick={() => setIsTipModalOpen(true)}>
+                            <div className="action-buttons" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                                <button
+                                    className="btn-brutal secondary"
+                                    onClick={() => setIsTipModalOpen(true)}
+                                    style={{
+                                        fontSize: 'clamp(0.75rem, 2vw, 0.9rem)',
+                                        padding: 'clamp(0.6rem, 1.5vw, 0.75rem) clamp(1rem, 2vw, 1.5rem)'
+                                    }}
+                                >
                                     💰 TIP AUTHOR
                                 </button>
                             </div>
@@ -135,23 +158,25 @@ export default function ArticlePage() {
 
                         {/* Content Body */}
                         <div className="article-body" style={{
-                            fontSize: '1.2rem',
+                            fontSize: 'clamp(1rem, 2.5vw, 1.2rem)',
                             lineHeight: 1.8,
                             color: '#e2e8f0',
                             fontFamily: 'Georgia, serif',
-                            marginBottom: '3rem'
+                            marginBottom: 'clamp(2rem, 4vw, 3rem)',
+                            wordWrap: 'break-word'
                         }}>
                             <div dangerouslySetInnerHTML={{ __html: article.content || '<p>No content available.</p>' }} />
                         </div>
 
-                        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+                        <div style={{ textAlign: 'center', marginBottom: 'clamp(2rem, 4vw, 3rem)' }}>
                             <a href={article.url} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{
                                 display: 'inline-block',
-                                padding: '1rem 2rem',
+                                padding: 'clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2rem)',
                                 textDecoration: 'none',
                                 fontWeight: 800,
                                 border: '2px solid black',
-                                boxShadow: '4px 4px 0 black'
+                                boxShadow: '4px 4px 0 black',
+                                fontSize: 'clamp(0.9rem, 2vw, 1rem)'
                             }}>
                                 Check Original Website ↗
                             </a>

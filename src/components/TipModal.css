@@ -62,7 +62,7 @@
 }
 
 .modal-header h2 {
-    font-size: 1.25rem;
+    font-size: clamp(1rem, 3vw, 1.25rem);
     color: var(--accent-primary);
     margin: 0;
     text-transform: uppercase;
@@ -94,7 +94,7 @@
 }
 
 .modal-body {
-    padding: 2rem 1.5rem;
+    padding: clamp(1.5rem, 3vw, 2rem) clamp(1rem, 3vw, 1.5rem);
 }
 
 .article-title {
@@ -127,6 +127,12 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 0.5rem;
+}
+
+@media (max-width: 480px) {
+    .amount-buttons {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 .amount-btn {
@@ -234,9 +240,16 @@
 .modal-footer {
     display: flex;
     gap: 1rem;
-    padding: 1.5rem;
+    padding: clamp(1rem, 3vw, 1.5rem);
     background: var(--bg-deep);
     border-top: var(--border-width) solid var(--border-color);
+    flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+    .modal-footer {
+        flex-direction: column;
+    }
 }
 
 .btn {

@@ -10,7 +10,6 @@ export default function Header() {
     const { mutate: disconnect } = useDisconnectWallet();
     const [open, setOpen] = useState(false);
 
-    // GSAP Animation for Entrance
     useEffect(() => {
         const ctx = gsap.context(() => {
             gsap.from(headerRef.current, {
@@ -29,18 +28,19 @@ export default function Header() {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            padding: '1.5rem 2rem',
+            padding: 'clamp(1rem, 3vw, 1.5rem) clamp(1rem, 3vw, 2rem)',
             borderBottom: '4px solid black',
             background: 'var(--bg-deep)',
             position: 'sticky',
             top: 0,
-            zIndex: 100
+            zIndex: 100,
+            gap: '1rem',
+            flexWrap: 'wrap'
         }}>
-            {/* Logo */}
             <div className="logo-container">
                 <Link to="/" style={{ textDecoration: 'none' }}>
                     <h1 style={{
-                        fontSize: '3rem',
+                        fontSize: 'clamp(2rem, 5vw, 3rem)',
                         fontWeight: 900,
                         letterSpacing: '-2px',
                         lineHeight: 1,
@@ -53,7 +53,7 @@ export default function Header() {
                 </Link>
                 <span style={{
                     display: 'block',
-                    fontSize: '0.8rem',
+                    fontSize: 'clamp(0.65rem, 1.5vw, 0.8rem)',
                     fontFamily: 'var(--font-mono)',
                     letterSpacing: '2px',
                     color: 'var(--text-muted)'
@@ -62,32 +62,40 @@ export default function Header() {
                 </span>
             </div>
 
-            {/* Navigation / Actions */}
-            <nav style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-                <a href="#latest" style={{
+            <nav className="header-nav" style={{
+                display: 'flex',
+                gap: 'clamp(0.5rem, 2vw, 2rem)',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                justifyContent: 'flex-end'
+            }}>
+                <a href="#latest" className="nav-link" style={{
                     fontWeight: 700,
                     color: 'var(--text-main)',
                     textDecoration: 'none',
-                    fontSize: '1.1rem'
+                    fontSize: 'clamp(0.9rem, 2vw, 1.1rem)'
                 }}>LATEST</a>
-                <a href="#trending" style={{
+                <a href="#trending" className="nav-link" style={{
                     fontWeight: 700,
                     color: 'var(--text-main)',
                     textDecoration: 'none',
-                    fontSize: '1.1rem'
+                    fontSize: 'clamp(0.9rem, 2vw, 1.1rem)'
                 }}>TRENDING</a>
 
                 {account ? (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                        <span className="account-address" style={{
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: 'clamp(0.75rem, 1.5vw, 0.9rem)'
+                        }}>
                             {account.address.slice(0, 6)}...{account.address.slice(-4)}
                         </span>
                         <button
                             onClick={() => disconnect()}
                             className="btn-brutal"
                             style={{
-                                padding: '0.8rem 1.5rem',
-                                fontSize: '0.9rem',
+                                padding: 'clamp(0.6rem, 1.5vw, 0.8rem) clamp(1rem, 2vw, 1.5rem)',
+                                fontSize: 'clamp(0.75rem, 1.5vw, 0.9rem)',
                                 background: 'var(--bg-card)'
                             }}
                         >
@@ -98,10 +106,10 @@ export default function Header() {
                     <ConnectModal
                         trigger={
                             <button
-                                className="btn-primary" // Use the primary "brutal" button style
+                                className="btn-primary"
                                 style={{
-                                    padding: '0.8rem 2rem',
-                                    fontSize: '1.1rem',
+                                    padding: 'clamp(0.6rem, 1.5vw, 0.8rem) clamp(1rem, 2vw, 2rem)',
+                                    fontSize: 'clamp(0.9rem, 2vw, 1.1rem)',
                                     fontWeight: 800
                                 }}
                             >
