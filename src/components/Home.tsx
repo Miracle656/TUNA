@@ -1,16 +1,47 @@
+import { useState, useMemo } from 'react';
 import { useLatestNews } from '../hooks/useNews'
 import Header from './Header'
 import NewsCard from './NewsCard'
 import JustInSidebar from './JustInSidebar'
+import SourceFilter from './SourceFilter'
+import Footer from './Footer'
 import { Link } from 'react-router-dom';
 
 export default function Home() {
-    const { data: articles, isLoading, error } = useLatestNews(50)
+    const [activeTab, setActiveTab] = useState('latest');
+    const [activeSource, setActiveSource] = useState('all');
+    const { data: articles, isLoading, error } = useLatestNews(50);
 
-    // Split content: First article is Hero, next 8 are sidebar, rest are grid
-    const heroArticle = articles?.[0];
-    const sidebarArticles = articles?.slice(1, 9) || [];
-    const feedArticles = articles?.slice(9) || [];
+    // Filter and sort articles
+    const sortedArticles = useMemo(() => {
+        if (!articles) return [];
+
+        // First filter by source
+        let filtered = articles;
+        if (activeSource !== 'all') {
+            if (activeSource === 'rss') {
+                filtered = articles.filter(a => !a.author?.startsWith('@'));
+            } else {
+                filtered = articles.filter(a => a.author === activeSource);
+            }
+        }
+
+        // Then sort based on tab
+        if (activeTab === 'trending') {
+            return [...filtered].sort((a, b) => {
+                const aEngagement = (a.totalTips || 0) + (a.commentCount || 0);
+                const bEngagement = (b.totalTips || 0) + (b.commentCount || 0);
+                return bEngagement - aEngagement;
+            });
+        }
+
+        return filtered;
+    }, [articles, activeTab, activeSource]);
+
+    // Split content
+    const heroArticle = sortedArticles?.[0];
+    const sidebarArticles = sortedArticles?.slice(1, 9) || [];
+    const feedArticles = sortedArticles?.slice(9) || [];
 
     return (
         <div className="home-page" style={{
@@ -18,7 +49,7 @@ export default function Home() {
             flexDirection: 'column',
             flex: 1
         }}>
-            <Header />
+            <Header activeTab={activeTab} onTabChange={setActiveTab} />
 
             <main className="container" style={{
                 width: '100%',
@@ -116,13 +147,19 @@ export default function Home() {
                             alignItems: 'center',
                             marginBottom: 'clamp(1.5rem, 3vw, 2rem)',
                             paddingBottom: '1rem',
-                            borderBottom: '4px solid var(--border-color)'
+                            borderBottom: '4px solid var(--border-color)',
+                            flexWrap: 'wrap',
+                            gap: '1rem'
                         }}>
                             <h2 style={{
                                 fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
                                 textTransform: 'uppercase',
                                 margin: 0
                             }}>MORE TOP STORIES</h2>
+                            <SourceFilter
+                                activeSource={activeSource}
+                                onSourceChange={setActiveSource}
+                            />
                         </div>
 
                         <div style={{
@@ -158,6 +195,7 @@ export default function Home() {
                 </div>
 
             </main>
+            <Footer />
         </div>
     )
 }

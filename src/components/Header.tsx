@@ -4,7 +4,7 @@ import { useCurrentAccount, useDisconnectWallet, ConnectModal } from '@mysten/da
 // useConnectWallet, useWallets,
 import { Link } from 'react-router-dom';
 
-export default function Header() {
+export default function Header({ activeTab = 'latest', onTabChange }: { activeTab?: string; onTabChange?: (tab: string) => void }) {
     const headerRef = useRef<HTMLElement>(null);
     const account = useCurrentAccount();
     const { mutate: disconnect } = useDisconnectWallet();
@@ -68,20 +68,38 @@ export default function Header() {
                     gap: 'clamp(0.5rem, 2vw, 2rem)',
                     alignItems: 'center'
                 }}>
-                    <a href="#latest" className="nav-link" style={{
-                        fontWeight: 700,
-                        color: 'var(--text-main)',
-                        textDecoration: 'none',
-                        fontSize: 'clamp(0.9rem, 2vw, 1.1rem)',
-                        display: 'none'
-                    }}>LATEST</a>
-                    <a href="#trending" className="nav-link" style={{
-                        fontWeight: 700,
-                        color: 'var(--text-main)',
-                        textDecoration: 'none',
-                        fontSize: 'clamp(0.9rem, 2vw, 1.1rem)',
-                        display: 'none'
-                    }}>TRENDING</a>
+                    <button
+                        onClick={() => onTabChange?.('latest')}
+                        className="nav-link"
+                        style={{
+                            fontWeight: 700,
+                            color: activeTab === 'latest' ? 'var(--accent-primary)' : 'var(--text-main)',
+                            textDecoration: 'none',
+                            fontSize: 'clamp(0.9rem, 2vw, 1.1rem)',
+                            background: 'none',
+                            border: 'none',
+                            cursor: 'pointer',
+                            transition: 'color 0.2s',
+                        }}
+                    >
+                        LATEST
+                    </button>
+                    <button
+                        onClick={() => onTabChange?.('trending')}
+                        className="nav-link"
+                        style={{
+                            fontWeight: 700,
+                            color: activeTab === 'trending' ? 'var(--accent-primary)' : 'var(--text-main)',
+                            textDecoration: 'none',
+                            fontSize: 'clamp(0.9rem, 2vw, 1.1rem)',
+                            background: 'none',
+                            border: 'none',
+                            cursor: 'pointer',
+                            transition: 'color 0.2s',
+                        }}
+                    >
+                        TRENDING
+                    </button>
 
                     {account ? (
                         <div className="desktop-account" style={{ display: 'none', alignItems: 'center', gap: '0.5rem' }}>
