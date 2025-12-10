@@ -17,23 +17,29 @@ export default function SourceFilter({ onSourceChange, activeSource }: SourceFil
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <div style={{ position: 'relative', display: 'inline-block' }}>
+        <div style={{ position: 'relative', display: 'inline-block', width: '100%', maxWidth: '250px' }}>
             {/* Dropdown Button */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="btn-brutal"
                 style={{
-                    padding: '0.75rem 1.5rem',
-                    fontSize: '0.9rem',
+                    padding: 'clamp(0.6rem, 1.5vw, 0.75rem) clamp(1rem, 2vw, 1.5rem)',
+                    fontSize: 'clamp(0.75rem, 1.5vw, 0.9rem)',
                     fontWeight: 700,
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.5rem',
                     background: 'var(--bg-card)',
+                    width: '100%',
+                    justifyContent: 'space-between'
                 }}
             >
-                <span>📡</span>
-                {sources.find(s => s.id === activeSource)?.label || 'ALL SOURCES'}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', overflow: 'hidden' }}>
+                    <span>📡</span>
+                    <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {sources.find(s => s.id === activeSource)?.label || 'ALL SOURCES'}
+                    </span>
+                </div>
                 <span style={{ fontSize: '0.7rem' }}>▼</span>
             </button>
 
@@ -45,6 +51,7 @@ export default function SourceFilter({ onSourceChange, activeSource }: SourceFil
                         position: 'absolute',
                         top: 'calc(100% + 0.5rem)',
                         left: 0,
+                        right: 0,
                         minWidth: '200px',
                         background: 'var(--bg-card)',
                         zIndex: 1000,
@@ -60,14 +67,14 @@ export default function SourceFilter({ onSourceChange, activeSource }: SourceFil
                             }}
                             style={{
                                 width: '100%',
-                                padding: '0.75rem 1rem',
+                                padding: 'clamp(0.6rem, 1.5vw, 0.75rem) clamp(0.75rem, 2vw, 1rem)',
                                 textAlign: 'left',
                                 background: activeSource === source.id ? 'var(--accent-primary)' : 'transparent',
                                 color: activeSource === source.id ? 'black' : 'var(--text-main)',
                                 border: 'none',
                                 fontWeight: activeSource === source.id ? 800 : 600,
                                 cursor: 'pointer',
-                                fontSize: '0.9rem',
+                                fontSize: 'clamp(0.75rem, 1.5vw, 0.9rem)',
                                 transition: 'all 0.2s',
                             }}
                             onMouseEnter={(e) => {

@@ -239,34 +239,46 @@ export default function Header({ activeTab = 'latest', onTabChange }: { activeTa
                         </button>
 
                         <nav style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                            <a
-                                href="#latest"
-                                onClick={() => setMobileMenuOpen(false)}
+                            <button
+                                onClick={() => {
+                                    onTabChange?.('latest');
+                                    setMobileMenuOpen(false);
+                                }}
                                 style={{
                                     fontWeight: 700,
-                                    color: 'var(--text-main)',
-                                    textDecoration: 'none',
+                                    color: activeTab === 'latest' ? 'var(--accent-primary)' : 'var(--text-main)',
                                     fontSize: '1.25rem',
                                     padding: '0.5rem 0',
-                                    borderBottom: '2px solid var(--border-color)'
+                                    background: 'none',
+                                    border: 'none',
+                                    borderBottom: '2px solid var(--border-color)',
+                                    textAlign: 'left',
+                                    cursor: 'pointer',
+                                    width: '100%'
                                 }}
                             >
                                 LATEST
-                            </a>
-                            <a
-                                href="#trending"
-                                onClick={() => setMobileMenuOpen(false)}
+                            </button>
+                            <button
+                                onClick={() => {
+                                    onTabChange?.('trending');
+                                    setMobileMenuOpen(false);
+                                }}
                                 style={{
                                     fontWeight: 700,
-                                    color: 'var(--text-main)',
-                                    textDecoration: 'none',
+                                    color: activeTab === 'trending' ? 'var(--accent-primary)' : 'var(--text-main)',
                                     fontSize: '1.25rem',
                                     padding: '0.5rem 0',
-                                    borderBottom: '2px solid var(--border-color)'
+                                    background: 'none',
+                                    border: 'none',
+                                    borderBottom: '2px solid var(--border-color)',
+                                    textAlign: 'left',
+                                    cursor: 'pointer',
+                                    width: '100%'
                                 }}
                             >
                                 TRENDING
-                            </a>
+                            </button>
 
                             {account ? (
                                 <>
