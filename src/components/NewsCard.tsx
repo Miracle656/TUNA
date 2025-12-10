@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { type NewsArticle } from '../types';
+import type { NewsArticle } from '../types';
 import TipModal from './TipModal';
 import './NewsCard.css';
 
@@ -20,7 +20,6 @@ export default function NewsCard({ article }: NewsCardProps) {
 
     // Entrance animation
     useEffect(() => {
-        // Kill any existing ScrollTrigger instances for this element to prevent memory leaks or conflicts
         const triggers = ScrollTrigger.getAll();
         triggers.forEach(trigger => {
             if (trigger.trigger === cardRef.current) {
@@ -39,7 +38,6 @@ export default function NewsCard({ article }: NewsCardProps) {
         );
 
         return () => {
-            // Cleanup
             ScrollTrigger.getById(cardRef.current?.id || '')?.kill();
         };
     }, []);
@@ -77,133 +75,144 @@ export default function NewsCard({ article }: NewsCardProps) {
                     display: 'flex',
                     flexDirection: 'column',
                     height: '100%',
+                    minHeight: '400px',
                     cursor: 'pointer',
-                    position: 'relative'
+                    position: 'relative',
+                    overflow: 'hidden',
+                    backgroundImage: article.image
+                        ? `linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%), url(${article.image})`
+                        : 'linear-gradient(135deg, var(--bg-card) 0%, var(--bg-deep) 100%)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    padding: '1.5rem',
+                    justifyContent: 'flex-end',
                 }}
             >
-                {/* Make the whole card clickable via a Link wrapper would be best, but we have buttons inside */}
-                {/* So we make the image and title link to the detail page */}
-
                 {/* Category Tag */}
                 <div style={{
                     position: 'absolute',
-                    top: '-10px',
-                    right: '-10px',
+                    top: '1rem',
+                    right: '1rem',
                     background: 'var(--accent-warning)',
                     color: 'black',
-                    padding: '0.2rem 0.5rem',
-                    fontSize: '0.7rem',
-                    fontWeight: 'bold',
+                    padding: '0.3rem 0.7rem',
+                    fontSize: '0.75rem',
+                    fontWeight: 800,
                     border: '2px solid black',
+                    boxShadow: '3px 3px 0 black',
                     zIndex: 2,
-                    fontFamily: 'var(--font-mono)'
+                    fontFamily: 'var(--font-mono)',
+                    textTransform: 'uppercase',
                 }}>
                     {article.category}
                 </div>
 
-                {/* Image */}
-                <Link to={`/article/${article.id}`} style={{ display: 'block' }}>
-                    {article.image && (
-                        <div style={{
-                            height: '240px',
-                            background: `url(${article.image}) center/cover no-repeat`,
-                            borderBottom: '2px solid black',
-                            margin: '-1.5rem -1.5rem 1rem -1.5rem'
-                        }} />
-                    )}
-                </Link>
+                {/* Content Container */}
+                <div style={{
+                    position: 'relative',
+                    zIndex: 1,
+                }}>
+                    <Link to={`/article/${article.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                        <h3 style={{
+                            fontSize: 'clamp(1.2rem, 2vw, 1.6rem)',
+                            marginBottom: '0.75rem',
+                            lineHeight: 1.25,
+                            fontWeight: 800,
+                            color: 'white',
+                            textShadow: '2px 2px 4px rgba(0,0,0,0.8)',
+                        }}>
+                            {article.title}
+                        </h3>
+                    </Link>
 
-                <Link to={`/article/${article.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                    <h3 style={{
-                        fontSize: '1.4rem',
-                        marginBottom: '0.5rem',
-                        lineHeight: 1.25,
-                        fontWeight: 700
+                    <div style={{
+                        display: 'flex',
+                        gap: '0.5rem',
+                        fontSize: '0.8rem',
+                        color: 'rgba(255,255,255,0.8)',
+                        marginBottom: '1rem',
+                        fontFamily: 'var(--font-mono)',
                     }}>
-                        {article.title}
-                    </h3>
-                </Link>
+                        <span>{new Date(Number(article.timestamp)).toLocaleDateString()}</span>
+                        <span>•</span>
+                        <span>{article.source}</span>
+                    </div>
 
-                <div style={{
-                    display: 'flex',
-                    gap: '0.5rem',
-                    fontSize: '0.8rem',
-                    color: 'var(--text-muted)',
-                    marginBottom: '1rem',
-                    fontFamily: 'var(--font-mono)'
-                }}>
-                    <span>{new Date(Number(article.timestamp)).toLocaleDateString()}</span>
-                    <span>•</span>
-                    <span>{article.source}</span>
-                </div>
+                    <p style={{
+                        fontSize: '0.95rem',
+                        color: 'rgba(255,255,255,0.9)',
+                        marginBottom: '1.5rem',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                        lineHeight: 1.5,
+                        textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
+                    }}>
+                        {article.summary || article.content?.substring(0, 150) || 'No description available'}
+                    </p>
 
-                <p style={{
-                    fontSize: '1rem',
-                    color: '#cbd5e1',
-                    flex: 1,
-                    marginBottom: '2rem',
-                    display: '-webkit-box',
-                    WebkitLineClamp: 3,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden',
-                    lineHeight: 1.5
-                }}>
-                    {article.summary}
-                </p>
-
-                {/* Action Bar */}
-                <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    marginTop: 'auto',
-                    borderTop: '2px solid black',
-                    paddingTop: '1rem',
-                    marginLeft: '-1.5rem',
-                    marginRight: '-1.5rem',
-                    paddingLeft: '1.5rem',
-                    paddingRight: '1.5rem',
-                    background: 'rgba(15, 23, 42, 0.4)'
-                }}>
-                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                    {/* Action Buttons */}
+                    <div style={{
+                        display: 'flex',
+                        gap: '0.75rem',
+                        alignItems: 'center',
+                        flexWrap: 'wrap',
+                    }}>
                         <button
-                            className="btn-brutal secondary"
-                            style={{ fontSize: '0.7rem', padding: '0.4rem 0.8rem' }}
-                            onClick={(e) => {
-                                e.preventDefault();
-                                setIsTipModalOpen(true);
+                            onClick={() => setIsTipModalOpen(true)}
+                            className="btn-brutal"
+                            style={{
+                                padding: '0.5rem 1rem',
+                                fontSize: '0.85rem',
+                                background: 'rgba(0,0,0,0.7)',
+                                backdropFilter: 'blur(10px)',
+                                border: '2px solid var(--accent-primary)',
+                                color: 'var(--accent-primary)',
                             }}
                         >
                             💰 TIP
                         </button>
-                        <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>
-                            {article.totalTips > 0 ? `${(article.totalTips / 1_000_000_000).toFixed(2)} SUI` : ''}
-                        </span>
-                    </div>
 
-                    <Link
-                        to={`/article/${article.id}`}
-                        style={{
-                            color: 'var(--accent-primary)',
-                            fontWeight: 800,
-                            fontSize: '0.9rem',
+                        <Link
+                            to={`/article/${article.id}`}
+                            className="btn-brutal"
+                            style={{
+                                padding: '0.5rem 1rem',
+                                fontSize: '0.85rem',
+                                textDecoration: 'none',
+                                background: 'var(--accent-primary)',
+                                color: 'black',
+                                border: '2px solid black',
+                                boxShadow: '3px 3px 0 black',
+                            }}
+                        >
+                            READ ↗
+                        </Link>
+
+                        <div style={{
+                            marginLeft: 'auto',
                             display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.2rem',
-                            textDecoration: 'none'
-                        }}
-                    >
-                        READ ↗
-                    </Link>
+                            gap: '1rem',
+                            fontSize: '0.8rem',
+                            color: 'rgba(255,255,255,0.8)',
+                            fontFamily: 'var(--font-mono)',
+                        }}>
+                            <span>💬 {article.commentCount || 0}</span>
+                            <span>💰 {article.totalTips || 0} SUI</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <TipModal
-                isOpen={isTipModalOpen}
-                onClose={() => setIsTipModalOpen(false)}
-                articleId={article.id}
-                articleTitle={article.title}
-            />
+            {isTipModalOpen && (
+                <TipModal
+                    isOpen={isTipModalOpen}
+                    articleId={article.id}
+                    articleTitle={article.title}
+                    onClose={() => setIsTipModalOpen(false)}
+                />
+            )}
         </>
     );
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useSignAndExecuteTransaction } from '@mysten/dapp-kit'
 import { createTipArticleTransaction, suiToMist, isValidTipAmount } from '../lib/sui'
+import Toast from './Toast'
 import './TipModal.css'
 
 interface TipModalProps {
@@ -14,6 +15,7 @@ export default function TipModal({ isOpen, articleId, articleTitle, onClose }: T
     const [amount, setAmount] = useState(0.01)
     const [customAmount, setCustomAmount] = useState('')
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null)
     const { mutate: signAndExecute } = useSignAndExecuteTransaction()
 
     // Prevent body scroll when modal is open
@@ -46,7 +48,7 @@ export default function TipModal({ isOpen, articleId, articleTitle, onClose }: T
         const amountInMist = suiToMist(tipAmount)
 
         if (!isValidTipAmount(amountInMist)) {
-            alert('Minimum tip amount is 0.001 SUI')
+            setToast({ message: 'Minimum tip amount is 0.001 SUI', type: 'error' })
             return
         }
 
@@ -59,96 +61,106 @@ export default function TipModal({ isOpen, articleId, articleTitle, onClose }: T
                 { transaction: tx },
                 {
                     onSuccess: () => {
-                        alert(`Successfully tipped ${tipAmount} SUI!`)
-                        onClose()
+                        setToast({ message: `Successfully tipped ${tipAmount} SUI!`, type: 'success' })
+                        setTimeout(() => onClose(), 2000)
                     },
                     onError: (error: any) => {
                         console.error('Tip failed:', error)
-                        alert('Failed to send tip. Please try again.')
+                        setToast({ message: 'Failed to send tip. Please try again.', type: 'error' })
                         setIsSubmitting(false)
                     },
                 }
             )
         } catch (error) {
             console.error('Error creating tip transaction:', error)
-            alert('Failed to create transaction')
+            setToast({ message: 'Failed to create transaction', type: 'error' })
             setIsSubmitting(false)
         }
     }
 
     return (
-        <div className="modal-overlay" onClick={onClose}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                <div className="modal-header">
-                    <h2>💰 Tip this Article</h2>
-                    <button className="close-btn" onClick={onClose}>×</button>
-                </div>
+        <>
+            <div className="modal-overlay" onClick={onClose}>
+                <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                    <div className="modal-header">
+                        <h2>💰 Tip this Article</h2>
+                        <button className="close-btn" onClick={onClose}>×</button>
+                    </div>
 
-                <div className="modal-body">
-                    <p className="article-title">{articleTitle}</p>
+                    <div className="modal-body">
+                        <p className="article-title">{articleTitle}</p>
 
-                    <div className="quick-amounts">
-                        <p className="section-label">Quick amounts:</p>
-                        <div className="amount-buttons">
-                            {quickAmounts.map((amt) => (
-                                <button
-                                    key={amt}
-                                    className={`amount-btn ${amount === amt && !customAmount ? 'active' : ''}`}
-                                    onClick={() => {
-                                        setAmount(amt)
-                                        setCustomAmount('')
-                                    }}
-                                >
-                                    {amt} SUI
-                                </button>
-                            ))}
+                        <div className="quick-amounts">
+                            <p className="section-label">Quick amounts:</p>
+                            <div className="amount-buttons">
+                                {quickAmounts.map((amt) => (
+                                    <button
+                                        key={amt}
+                                        className={`amount-btn ${amount === amt && !customAmount ? 'active' : ''}`}
+                                        onClick={() => {
+                                            setAmount(amt)
+                                            setCustomAmount('')
+                                        }}
+                                    >
+                                        {amt} SUI
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="custom-amount">
+                            <p className="section-label">Or enter custom amount:</p>
+                            <div className="input-group">
+                                <input
+                                    type="number"
+                                    min="0.001"
+                                    step="0.001"
+                                    value={customAmount}
+                                    onChange={(e) => setCustomAmount(e.target.value)}
+                                    placeholder="0.000"
+                                    className="amount-input"
+                                />
+                                <span className="input-suffix">SUI</span>
+                            </div>
+                            <p className="hint">Minimum: 0.001 SUI</p>
+                        </div>
+
+                        <div className="tip-summary">
+                            <div className="summary-row">
+                                <span>Tip Amount:</span>
+                                <span className="amount-value">
+                                    {customAmount || amount} SUI
+                                </span>
+                            </div>
+                            <div className="summary-row">
+                                <span>Gas Fee:</span>
+                                <span className="amount-value">~0.001 SUI</span>
+                            </div>
                         </div>
                     </div>
 
-                    <div className="custom-amount">
-                        <p className="section-label">Or enter custom amount:</p>
-                        <div className="input-group">
-                            <input
-                                type="number"
-                                min="0.001"
-                                step="0.001"
-                                value={customAmount}
-                                onChange={(e) => setCustomAmount(e.target.value)}
-                                placeholder="0.000"
-                                className="amount-input"
-                            />
-                            <span className="input-suffix">SUI</span>
-                        </div>
-                        <p className="hint">Minimum: 0.001 SUI</p>
+                    <div className="modal-footer">
+                        <button className="btn btn-secondary" onClick={onClose}>
+                            Cancel
+                        </button>
+                        <button
+                            className="btn btn-primary"
+                            onClick={handleTip}
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting ? 'Processing...' : 'Send Tip'}
+                        </button>
                     </div>
-
-                    <div className="tip-summary">
-                        <div className="summary-row">
-                            <span>Tip Amount:</span>
-                            <span className="amount-value">
-                                {customAmount || amount} SUI
-                            </span>
-                        </div>
-                        <div className="summary-row">
-                            <span>Gas Fee:</span>
-                            <span className="amount-value">~0.001 SUI</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="modal-footer">
-                    <button className="btn btn-secondary" onClick={onClose}>
-                        Cancel
-                    </button>
-                    <button
-                        className="btn btn-primary"
-                        onClick={handleTip}
-                        disabled={isSubmitting}
-                    >
-                        {isSubmitting ? 'Processing...' : 'Send Tip'}
-                    </button>
                 </div>
             </div>
-        </div>
+
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
+        </>
     )
 }
