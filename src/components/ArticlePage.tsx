@@ -161,17 +161,7 @@ export default function ArticlePage() {
                         </div>
 
                         {/* Content Body */}
-                        <div className="article-body" style={{
-                            fontSize: 'clamp(1rem, 2.5vw, 1.2rem)',
-                            lineHeight: 1.8,
-                            color: '#e2e8f0',
-                            fontFamily: 'Georgia, serif',
-                            marginBottom: 'clamp(2rem, 4vw, 3rem)',
-                            wordWrap: 'break-word',
-                            overflowWrap: 'break-word',
-                            wordBreak: 'break-word',
-                            maxWidth: '100%'
-                        }}>
+                        <div className="article-body">
                             <div dangerouslySetInnerHTML={{ __html: article.content || '<p>No content available.</p>' }} />
                         </div>
 

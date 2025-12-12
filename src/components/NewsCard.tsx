@@ -1,9 +1,11 @@
+
 import { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { NewsArticle } from '../types';
 import TipModal from './TipModal';
+import { getProxiedImageUrl } from '../lib/utils';
 import './NewsCard.css';
 
 // Register ScrollTrigger
@@ -11,12 +13,18 @@ gsap.registerPlugin(ScrollTrigger);
 
 interface NewsCardProps {
     article: NewsArticle;
-    size?: 'regular' | 'featured' | 'compact';
 }
 
 export default function NewsCard({ article }: NewsCardProps) {
     const [isTipModalOpen, setIsTipModalOpen] = useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
+
+    // Filter out unwanted sources
+    if (article.source === 'twitter') return null;
+
+    const bgImage = article.image
+        ? getProxiedImageUrl(article.image)
+        : `https://placehold.co/600x400/000000/FFF?text=${article.category || 'News'}`;
 
     // Entrance animation
     useEffect(() => {
@@ -79,9 +87,7 @@ export default function NewsCard({ article }: NewsCardProps) {
                     cursor: 'pointer',
                     position: 'relative',
                     overflow: 'hidden',
-                    backgroundImage: article.image
-                        ? `linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%), url(${article.image})`
-                        : 'linear-gradient(135deg, var(--bg-card) 0%, var(--bg-deep) 100%)',
+                    backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%), url(${bgImage})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     padding: '1.5rem',

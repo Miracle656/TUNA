@@ -20,9 +20,9 @@ export default function Home() {
         let filtered = articles;
         if (activeSource !== 'all') {
             if (activeSource === 'rss') {
-                filtered = articles.filter(a => !a.author?.startsWith('@'));
+                filtered = articles.filter(a => !a.source?.startsWith('@'));
             } else {
-                filtered = articles.filter(a => a.author === activeSource);
+                filtered = articles.filter(a => a.source === activeSource);
             }
         }
 

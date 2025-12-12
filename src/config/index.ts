@@ -1,8 +1,8 @@
 // Contract configuration
 export const CONTRACT_CONFIG = {
-    PACKAGE_ID: import.meta.env.VITE_PACKAGE_ID || '0xc19c25a9e42f77c2466a1df42d99a160a65a8800711eef447bb8da441df33c9e',
-    REGISTRY_ID: import.meta.env.VITE_REGISTRY_ID || '0x65fa3ee1fa53af68c36dd47b525392dfb844726af980f758c1b6dc353a30e962',
-    ADMIN_CAP_ID: import.meta.env.VITE_ADMIN_CAP_ID || '0x87c090e5a60dd505d3ef7634e6f32ced2134640f56b329946ab920a3a9299f6e',
+    PACKAGE_ID: import.meta.env.VITE_PACKAGE_ID || '0xadf0a6ce11dd75d3d44930ab5bf55781801dea2bfead056eb0bb59c1aa1e9e66',
+    REGISTRY_ID: import.meta.env.VITE_REGISTRY_ID || '0x68c01d2c08923d5257a5a9959d7c9250c4053dbe4641e229ccff2f35e6a3bb6d',
+    ADMIN_CAP_ID: import.meta.env.VITE_ADMIN_CAP_ID || '0x18d48d74bfddffbe3dc75025136722380f374baec942df2e0aef76cad1061496',
     MODULE_NAME: 'news_registry',
 } as const;
 

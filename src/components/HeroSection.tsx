@@ -5,7 +5,13 @@ interface HeroSectionProps {
     article: NewsArticle;
 }
 
+import { getProxiedImageUrl } from '../lib/utils';
+
 export default function HeroSection({ article }: HeroSectionProps) {
+    const bgImage = article.image
+        ? getProxiedImageUrl(article.image)
+        : `https://placehold.co/1200x600/000000/FFF?text=${article.category || 'Featured Story'}`;
+
     return (
         <div className="hero-section" style={{
             position: 'relative',
@@ -16,6 +22,9 @@ export default function HeroSection({ article }: HeroSectionProps) {
             boxShadow: '8px 8px 0 black',
             overflow: 'hidden',
             background: 'var(--bg-card)',
+            backgroundImage: `url(${bgImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
         }}>
             {/* Background overlay */}
             <div style={{
