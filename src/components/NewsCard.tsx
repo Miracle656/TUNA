@@ -13,9 +13,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 interface NewsCardProps {
     article: NewsArticle;
+    size?: 'regular' | 'featured';
 }
 
-export default function NewsCard({ article }: NewsCardProps) {
+export default function NewsCard({ article, size = 'regular' }: NewsCardProps) {
     const [isTipModalOpen, setIsTipModalOpen] = useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
 
@@ -83,7 +84,7 @@ export default function NewsCard({ article }: NewsCardProps) {
                     display: 'flex',
                     flexDirection: 'column',
                     height: '100%',
-                    minHeight: '400px',
+                    minHeight: size === 'featured' ? '500px' : '400px',
                     cursor: 'pointer',
                     position: 'relative',
                     overflow: 'hidden',
