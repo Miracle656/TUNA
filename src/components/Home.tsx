@@ -10,7 +10,8 @@ import { Link } from 'react-router-dom';
 export default function Home() {
     const [activeTab, setActiveTab] = useState('latest');
     const [activeSource, setActiveSource] = useState('all');
-    const { data: articles, isLoading, error } = useLatestNews(50);
+    const [limit, setLimit] = useState(100);
+    const { data: articles, isLoading, error } = useLatestNews(limit);
 
     // Filter and sort articles
     const sortedArticles = useMemo(() => {
@@ -31,11 +32,16 @@ export default function Home() {
             return [...filtered].sort((a, b) => {
                 const aEngagement = (a.totalTips || 0) + (a.commentCount || 0);
                 const bEngagement = (b.totalTips || 0) + (b.commentCount || 0);
+                // Fallback to timestamp if engagement is equal
+                if (bEngagement === aEngagement) {
+                    return Number(b.timestamp) - Number(a.timestamp);
+                }
                 return bEngagement - aEngagement;
             });
         }
 
-        return filtered;
+        // Default: Sort by Timestamp Descending (Newest First)
+        return [...filtered].sort((a, b) => Number(b.timestamp) - Number(a.timestamp));
     }, [articles, activeTab, activeSource]);
 
     // Split content
@@ -182,6 +188,27 @@ export default function Home() {
                                     </div>
                                 );
                             })}
+                        </div>
+
+                        {/* Pagination / Load More */}
+                        <div style={{ marginTop: '4rem', textAlign: 'center' }}>
+                            <button
+                                onClick={() => setLimit(prev => prev + 50)}
+                                className="btn-brutal"
+                                disabled={isLoading}
+                                style={{
+                                    padding: '1rem 3rem',
+                                    fontSize: '1.2rem',
+                                    fontWeight: 800,
+                                    width: 'auto',
+                                    minWidth: '200px',
+                                    background: 'var(--accent-primary)',
+                                    cursor: isLoading ? 'wait' : 'pointer',
+                                    opacity: isLoading ? 0.7 : 1
+                                }}
+                            >
+                                {isLoading ? 'LOADING...' : 'LOAD MORE ARTICLES'}
+                            </button>
                         </div>
                     </div>
 
