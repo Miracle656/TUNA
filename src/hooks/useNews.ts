@@ -9,7 +9,7 @@ const suiClient = new SuiClient({ url: NETWORK_CONFIG.RPC_URL });
 /**
  * Fetch latest news articles from the registry
  */
-export function useLatestNews(limit: number = 50) {
+export function useLatestNews(limit: number = 100) {
     return useQuery({
         queryKey: ['latestNews', limit],
         queryFn: async (): Promise<NewsArticle[]> => {
@@ -26,8 +26,9 @@ export function useLatestNews(limit: number = 50) {
             const fields = registry.data.content.fields as any;
             const latestBlobs = fields.latest_blobs as string[];
 
-            // Take only the requested number of articles
-            const blobsToFetch = latestBlobs.slice(0, Math.min(limit, latestBlobs.length));
+            // Take only the requested number of articles (NEWEST FIRST)
+            // Slice from the end (-limit) to get the latest, then reverse to show newest first
+            const blobsToFetch = latestBlobs.slice(-limit).reverse();
 
             // Fetch metadata and engagement for each article
             const articles = await Promise.all(
